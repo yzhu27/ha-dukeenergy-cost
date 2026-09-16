@@ -19,6 +19,8 @@ statistic.
 
 ### HACS custom repository
 
+[![Open your Home Assistant instance and add this repository to HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=yzhu27&repository=ha-dukeenergy-cost&category=integration)
+
 1. In **HACS → Integrations → Custom repositories**, add this GitHub repository
    as category **Integration**.
 2. Download **Duke Energy Cost** and restart Home Assistant.
@@ -84,4 +86,4 @@ automatically.
 
 [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md) · [MIT License](LICENSE)
 
-[![Open your Home Assistant instance and add this repository to HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=yzhu27&repository=ha-dukeenergy-cost&category=integration)
+

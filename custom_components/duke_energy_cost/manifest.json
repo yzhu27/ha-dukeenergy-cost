@@ -1,0 +1,13 @@
+{
+  "domain": "duke_energy_cost",
+  "name": "Duke Energy Cost",
+  "codeowners": ["@yzhu27"],
+  "config_flow": true,
+  "dependencies": ["recorder"],
+  "documentation": "https://github.com/yzhu27/ha-dukeenergy-cost",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/yzhu27/ha-dukeenergy-cost/issues",
+  "requirements": [],
+  "version": "0.2.0"
+}

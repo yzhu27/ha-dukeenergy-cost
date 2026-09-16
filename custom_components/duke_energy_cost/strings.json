@@ -1,0 +1,176 @@
+{
+  "title": "Duke Energy Cost",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect Duke Energy usage",
+        "description": "Version {version}. Choose the cumulative kWh statistic imported by the official Duke Energy integration. This calculator does not need your Duke Energy credentials.",
+        "data": {
+          "source_statistic": "Duke Energy consumption statistic",
+          "name": "Name",
+          "schedule": "NC rate schedule",
+          "billing_cycle_day": "Billing-cycle start day",
+          "currency": "Currency",
+          "three_phase": "Three-phase service"
+        },
+        "data_description": {
+          "source_statistic": "Cumulative kWh statistic imported by the official Duke Energy integration.",
+          "name": "Name used for the device and its sensors.",
+          "schedule": "Rate schedule printed on the Duke Energy bill.",
+          "billing_cycle_day": "Day of the month, from 1 to 28, when fixed charges and monthly totals reset.",
+          "currency": "Currency symbol used by the generated cost statistics. Duke Energy bills normally use USD.",
+          "three_phase": "Enable only if the account is billed for three-phase residential service."
+        }
+      },
+      "rates": {
+        "title": "Rates and adjustments",
+        "description": "Published {schedule} values are prefilled. Review them against a recent bill. Energy rates and riders are USD/kWh; sales tax is a percentage (enter 7 for 7%).",
+        "data": {
+          "basic_charge": "Basic monthly charge",
+          "three_phase_charge": "Three-phase monthly surcharge",
+          "summer_rate": "May–September rate",
+          "winter_first_rate": "October–April first-tier rate",
+          "winter_additional_rate": "October–April additional rate",
+          "tier_kwh": "First-tier threshold",
+          "on_peak_rate": "On-peak energy rate",
+          "off_peak_rate": "Off-peak energy rate",
+          "discount_rate": "Discount energy rate",
+          "critical_peak_rate": "Critical-peak energy rate",
+          "standard_rate": "Standard energy rate",
+          "on_peak_demand_rate": "On-peak demand rate",
+          "max_demand_rate": "Maximum-demand rate",
+          "demand_mode": "Demand calculation",
+          "manual_on_peak_kw": "Manual monthly on-peak kW",
+          "manual_max_kw": "Manual monthly maximum kW",
+          "cpp_events": "CPP events (YYYY-MM-DD or YYYY-MM-DD@HH)",
+          "additional_kwh_rate": "Additional rider/adjustment per kWh",
+          "monthly_adjustment": "Additional monthly adjustment",
+          "tax_percent": "Sales tax (%)"
+        },
+        "data_description": {
+          "basic_charge": "Fixed amount charged once per billing cycle, in USD.",
+          "three_phase_charge": "Additional fixed amount per billing cycle when three-phase service is enabled, in USD.",
+          "summer_rate": "RES energy price for May through September, in USD/kWh.",
+          "winter_first_rate": "RES energy price for the first winter tier from October through April, in USD/kWh.",
+          "winter_additional_rate": "RES energy price above the winter first-tier threshold, in USD/kWh.",
+          "tier_kwh": "RES winter kWh included in the first tier during each billing cycle.",
+          "on_peak_rate": "Energy price during the schedule's on-peak windows, in USD/kWh.",
+          "off_peak_rate": "Energy price during off-peak windows, in USD/kWh.",
+          "discount_rate": "Energy price during the lowest-price discount windows, in USD/kWh.",
+          "critical_peak_rate": "R-TOU-CPP energy price during a configured critical-peak event, in USD/kWh.",
+          "standard_rate": "R-TOU-EV energy price outside discount windows, in USD/kWh.",
+          "on_peak_demand_rate": "R-TOUD charge for the billing-cycle on-peak demand, in USD/kW.",
+          "max_demand_rate": "R-TOUD charge for the billing-cycle maximum demand, in USD/kW.",
+          "demand_mode": "Choose an hourly estimate, manual billed kW values, or no demand charges.",
+          "manual_on_peak_kw": "Billed monthly on-peak demand in kW. Used only with the manual demand method.",
+          "manual_max_kw": "Billed monthly maximum demand in kW. Used only with the manual demand method.",
+          "cpp_events": "Announced event dates separated by commas or new lines. Add @HH to override the event start hour.",
+          "additional_kwh_rate": "Combined usage-based riders or adjustments, in USD/kWh. Enter 0 when none are needed.",
+          "monthly_adjustment": "Fixed amount added once per billing cycle, in USD. Use a negative value for a credit.",
+          "tax_percent": "Percentage applied to energy, riders, fixed charges, and demand charges. Enter 7 for 7%."
+        }
+      }
+    },
+    "error": {
+      "invalid_energy_statistic": "Select a sum statistic measured in kWh.",
+      "invalid_cpp_events": "Use comma- or line-separated YYYY-MM-DD or YYYY-MM-DD@HH entries."
+    },
+    "abort": {
+      "already_configured": "This Duke Energy consumption statistic is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Calculation settings",
+        "data": {
+          "schedule": "NC rate schedule",
+          "billing_cycle_day": "Billing-cycle start day",
+          "currency": "Currency",
+          "three_phase": "Three-phase service"
+        },
+        "data_description": {
+          "schedule": "Rate schedule printed on the Duke Energy bill.",
+          "billing_cycle_day": "Day of the month, from 1 to 28, when fixed charges and monthly totals reset.",
+          "currency": "Currency symbol used by the generated cost statistics.",
+          "three_phase": "Enable only if the account is billed for three-phase residential service."
+        }
+      },
+      "rates": {
+        "title": "Rates and adjustments",
+        "description": "Review the current {schedule} values against a recent bill. Saving recalculates the retained cost history.",
+        "data": {
+          "basic_charge": "Basic monthly charge",
+          "three_phase_charge": "Three-phase monthly surcharge",
+          "summer_rate": "May–September rate",
+          "winter_first_rate": "October–April first-tier rate",
+          "winter_additional_rate": "October–April additional rate",
+          "tier_kwh": "First-tier threshold",
+          "on_peak_rate": "On-peak energy rate",
+          "off_peak_rate": "Off-peak energy rate",
+          "discount_rate": "Discount energy rate",
+          "critical_peak_rate": "Critical-peak energy rate",
+          "standard_rate": "Standard energy rate",
+          "on_peak_demand_rate": "On-peak demand rate",
+          "max_demand_rate": "Maximum-demand rate",
+          "demand_mode": "Demand calculation",
+          "manual_on_peak_kw": "Manual monthly on-peak kW",
+          "manual_max_kw": "Manual monthly maximum kW",
+          "cpp_events": "CPP events (YYYY-MM-DD or YYYY-MM-DD@HH)",
+          "additional_kwh_rate": "Additional rider/adjustment per kWh",
+          "monthly_adjustment": "Additional monthly adjustment",
+          "tax_percent": "Sales tax (%)"
+        },
+        "data_description": {
+          "basic_charge": "Fixed amount charged once per billing cycle, in USD.",
+          "three_phase_charge": "Additional fixed amount per billing cycle when three-phase service is enabled, in USD.",
+          "summer_rate": "RES energy price for May through September, in USD/kWh.",
+          "winter_first_rate": "RES energy price for the first winter tier from October through April, in USD/kWh.",
+          "winter_additional_rate": "RES energy price above the winter first-tier threshold, in USD/kWh.",
+          "tier_kwh": "RES winter kWh included in the first tier during each billing cycle.",
+          "on_peak_rate": "Energy price during the schedule's on-peak windows, in USD/kWh.",
+          "off_peak_rate": "Energy price during off-peak windows, in USD/kWh.",
+          "discount_rate": "Energy price during the lowest-price discount windows, in USD/kWh.",
+          "critical_peak_rate": "R-TOU-CPP energy price during a configured critical-peak event, in USD/kWh.",
+          "standard_rate": "R-TOU-EV energy price outside discount windows, in USD/kWh.",
+          "on_peak_demand_rate": "R-TOUD charge for the billing-cycle on-peak demand, in USD/kW.",
+          "max_demand_rate": "R-TOUD charge for the billing-cycle maximum demand, in USD/kW.",
+          "demand_mode": "Choose an hourly estimate, manual billed kW values, or no demand charges.",
+          "manual_on_peak_kw": "Billed monthly on-peak demand in kW. Used only with the manual demand method.",
+          "manual_max_kw": "Billed monthly maximum demand in kW. Used only with the manual demand method.",
+          "cpp_events": "Announced event dates separated by commas or new lines. Add @HH to override the event start hour.",
+          "additional_kwh_rate": "Combined usage-based riders or adjustments, in USD/kWh. Enter 0 when none are needed.",
+          "monthly_adjustment": "Fixed amount added once per billing cycle, in USD. Use a negative value for a credit.",
+          "tax_percent": "Percentage applied to energy, riders, fixed charges, and demand charges. Enter 7 for 7%."
+        }
+      }
+    },
+    "error": {
+      "invalid_cpp_events": "Use comma- or line-separated YYYY-MM-DD or YYYY-MM-DD@HH entries."
+    }
+  },
+  "selector": {
+    "demand_mode": {
+      "options": {
+        "hourly_estimate": "Estimate from hourly-average kW",
+        "manual": "Use manual monthly kW values",
+        "none": "Exclude demand charges"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "current_rate": {"name": "Latest usage rate"},
+      "current_period": {"name": "Latest usage rate period"},
+      "cycle_energy": {"name": "Billing-cycle energy"},
+      "cycle_energy_cost": {"name": "Billing-cycle energy cost"},
+      "cycle_total_cost": {"name": "Billing-cycle estimated total"},
+      "on_peak_demand": {"name": "Estimated on-peak demand"},
+      "maximum_demand": {"name": "Estimated maximum demand"},
+      "last_usage": {"name": "Latest usage interval"}
+    }
+  },
+  "exceptions": {
+    "no_statistics": {"message": "The selected source has no usable energy statistics yet."}
+  }
+}

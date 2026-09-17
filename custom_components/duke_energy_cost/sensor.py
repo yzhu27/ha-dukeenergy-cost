@@ -17,9 +17,9 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import CONF_CURRENCY, CONF_NAME, CONF_SCHEDULE, DOMAIN
+from .const import CONF_CURRENCY, CONF_NAME, CONF_TARIFF_PROFILE, DOMAIN
 from .coordinator import DukeEnergyCostCoordinator, DukeEnergyCostData
-from .tariffs import SCHEDULE_NAMES
+from .tariffs import PROFILES
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -117,8 +117,8 @@ class DukeEnergyCostSensor(CoordinatorEntity[DukeEnergyCostCoordinator], SensorE
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
             name=str(coordinator.config[CONF_NAME]),
-            manufacturer="Duke Energy Carolinas",
-            model=SCHEDULE_NAMES[str(coordinator.config[CONF_SCHEDULE])],
+            manufacturer="Duke Energy",
+            model=PROFILES[str(coordinator.config[CONF_TARIFF_PROFILE])].label,
         )
         if description.key in {"current_rate"}:
             self._attr_native_unit_of_measurement = (

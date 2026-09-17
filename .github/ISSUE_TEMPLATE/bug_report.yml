@@ -1,0 +1,61 @@
+name: Bug report
+description: Report incorrect behavior or a calculation problem
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Do not include account numbers, addresses, credentials, or unredacted bills.
+  - type: input
+    id: ha-version
+    attributes:
+      label: Home Assistant version
+      placeholder: 2026.3.0
+    validations:
+      required: true
+  - type: input
+    id: integration-version
+    attributes:
+      label: Integration version
+      placeholder: 0.2.0
+    validations:
+      required: true
+  - type: dropdown
+    id: schedule
+    attributes:
+      label: Rate schedule
+      options:
+        - RES
+        - R-TOUD
+        - R-TOU
+        - R-TOU-CPP
+        - R-TOU-EV
+    validations:
+      required: true
+  - type: input
+    id: statistic
+    attributes:
+      label: Source statistic ID
+      description: Remove any private account-identifying portion if necessary.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include expected and actual behavior and the smallest affected date range.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs or diagnostic attributes
+      render: text
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed account numbers, addresses, credentials, and unredacted bills.
+          required: true

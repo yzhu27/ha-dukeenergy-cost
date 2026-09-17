@@ -26,8 +26,8 @@ from .calculator import CostPoint, UsageInterval, calculate
 from .const import (
     CONF_CURRENCY,
     CONF_NAME,
-    CONF_SCHEDULE,
     CONF_SOURCE_STATISTIC,
+    CONF_TARIFF_PROFILE,
     DEFAULT_HISTORY_DAYS,
     DEFAULT_SCAN_INTERVAL_HOURS,
     DOMAIN,
@@ -97,7 +97,7 @@ class DukeEnergyCostCoordinator(DataUpdateCoordinator[DukeEnergyCostData]):
                     translation_domain=DOMAIN,
                     translation_key="no_statistics",
                 )
-            points = calculate(intervals, self.config[CONF_SCHEDULE], self.config)
+            points = calculate(intervals, self.config[CONF_TARIFF_PROFILE], self.config)
             if not points:
                 raise UpdateFailed(
                     translation_domain=DOMAIN,

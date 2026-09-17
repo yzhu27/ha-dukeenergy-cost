@@ -14,7 +14,6 @@ from .coordinator import DukeEnergyCostCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
-
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up a rate calculator config entry."""
     coordinator = DukeEnergyCostCoordinator(hass, entry)

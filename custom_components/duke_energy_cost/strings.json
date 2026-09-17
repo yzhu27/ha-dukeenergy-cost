@@ -72,6 +72,6 @@
     },
     "error": {"invalid_cpp_events": "Use comma- or line-separated YYYY-MM-DD or YYYY-MM-DD@HH entries."}
   },
-  "entity": {"sensor": {"current_rate": {"name": "Latest usage rate"}, "current_period": {"name": "Latest usage rate period"}, "cycle_energy": {"name": "Billing-cycle energy"}, "cycle_energy_cost": {"name": "Billing-cycle energy cost"}, "cycle_total_cost": {"name": "Billing-cycle estimated total"}, "on_peak_demand": {"name": "Estimated on-peak demand"}, "maximum_demand": {"name": "Estimated maximum demand"}, "last_usage": {"name": "Latest usage interval"}}},
+  "entity": {"sensor": {"current_rate": {"name": "Current electricity rate"}, "current_period": {"name": "Current rate period"}, "cycle_energy": {"name": "Billing-cycle energy"}, "cycle_energy_cost": {"name": "Billing-cycle energy cost"}, "cycle_total_cost": {"name": "Billing-cycle estimated total"}, "on_peak_demand": {"name": "Estimated on-peak demand"}, "maximum_demand": {"name": "Estimated maximum demand"}, "last_usage": {"name": "Latest usage interval"}}},
   "exceptions": {"no_statistics": {"message": "The selected source has no usable energy statistics yet."}}
 }

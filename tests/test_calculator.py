@@ -91,6 +91,29 @@ def test_cpp_event_and_ev_periods():
     assert tariffs.tou_period(datetime(2026, 2, 1, 5, tzinfo=calculator.LOCAL_TZ), ev, {}) == tariffs.PERIOD_STANDARD
 
 
+def test_current_cpp_period_uses_wall_clock():
+    config = _config("nc_dep_r_tou_cpp")
+    at_2040 = datetime(2026, 9, 16, 20, 40, tzinfo=calculator.LOCAL_TZ)
+    period, rate = calculator.current_period_rate(
+        at_2040, "nc_dep_r_tou_cpp", config
+    )
+    assert period == tariffs.PERIOD_ON_PEAK
+    assert rate == .21952
+
+    config[const.CONF_CPP_EVENTS] = "2026-09-16"
+    period, rate = calculator.current_period_rate(
+        at_2040, "nc_dep_r_tou_cpp", config
+    )
+    assert period == tariffs.PERIOD_CRITICAL_PEAK
+    assert rate == .41002
+
+    at_2100 = datetime(2026, 9, 16, 21, 0, tzinfo=calculator.LOCAL_TZ)
+    period, _ = calculator.current_period_rate(
+        at_2100, "nc_dep_r_tou_cpp", config
+    )
+    assert period == tariffs.PERIOD_OFF_PEAK
+
+
 def test_nc_progress_residential_model():
     point = _one_hour("nc_dep_res", (2026, 1, 2, 12), 801)
     energy = 800 * .12623 + .11623

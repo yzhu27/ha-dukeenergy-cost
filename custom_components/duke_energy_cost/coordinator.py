@@ -22,8 +22,16 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
 
-from .calculator import CostPoint, UsageInterval, calculate
+from .calculator import (
+    LOCAL_TZ,
+    CostPoint,
+    UsageInterval,
+    billing_cycle_key,
+    calculate,
+    current_period_rate,
+)
 from .const import (
+    CONF_BILLING_CYCLE_DAY,
     CONF_CURRENCY,
     CONF_NAME,
     CONF_SOURCE_STATISTIC,
@@ -105,13 +113,26 @@ class DukeEnergyCostCoordinator(DataUpdateCoordinator[DukeEnergyCostData]):
                 )
             self._write_statistics(points)
             latest = points[-1]
+            now = dt_util.utcnow()
+            current_cycle = billing_cycle_key(
+                now.astimezone(LOCAL_TZ),
+                int(self.config[CONF_BILLING_CYCLE_DAY]),
+            )
+            same_cycle = current_cycle == latest.cycle_key
+            current_period, current_rate = current_period_rate(
+                now,
+                self.config[CONF_TARIFF_PROFILE],
+                self.config,
+                latest.cycle_kwh if same_cycle else 0.0,
+                latest.max_demand_kw if same_cycle else 0.0,
+            )
             return DukeEnergyCostData(
                 last_update=dt_util.utcnow(),
                 last_usage_start=latest.start,
                 energy_cost_statistic_id=self.energy_cost_statistic_id,
                 total_cost_statistic_id=self.total_cost_statistic_id,
-                current_rate=latest.rate,
-                current_period=latest.period,
+                current_rate=current_rate,
+                current_period=current_period,
                 cycle_key=latest.cycle_key,
                 cycle_kwh=latest.cycle_kwh,
                 cycle_energy_cost=latest.cycle_energy_cost,

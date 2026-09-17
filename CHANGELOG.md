@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1
+
+- Calculate current rate and rate-period entities from the Home Assistant
+  clock and refresh them at each hourly tariff boundary.
+
 ## 0.3.0
 
 - Initial multi-state residential release.

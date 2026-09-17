@@ -164,7 +164,7 @@ class DukeEnergyCostConfigFlow(_TariffSteps, config_entries.ConfigFlow, domain=D
                 return await self.async_step_state()
         return self.async_show_form(
             step_id="user", data_schema=_general_schema({}, source_options=options),
-            errors=errors, description_placeholders={"version": "0.3.0"},
+            errors=errors, description_placeholders={"version": "0.3.1"},
         )
 
     async def _async_finish(self, data: dict[str, Any]):

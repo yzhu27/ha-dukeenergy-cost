@@ -94,6 +94,80 @@ def _three_tier(kwh: float, prior: float, first_end: float, second_end: float,
     return cost, period, cost / kwh if kwh else first_rate
 
 
+def current_period_rate(
+    when: datetime,
+    profile_id: str,
+    config: dict,
+    cycle_kwh: float = 0.0,
+    max_demand_kw: float = 0.0,
+) -> tuple[str, float]:
+    """Return the tariff period and marginal rate at a wall-clock time."""
+    local = when.astimezone(LOCAL_TZ)
+    profile = PROFILES[profile_id]
+
+    if profile.model == "flat":
+        return PERIOD_STANDARD, float(config[CONF_ENERGY_RATE])  # noqa: F405
+    if profile.model == "tiered_2":
+        first = cycle_kwh < float(config[CONF_TIER_KWH])  # noqa: F405
+        return (
+            PERIOD_WINTER_FIRST if first else PERIOD_WINTER_ADDITIONAL,
+            float(config[CONF_WINTER_FIRST_RATE] if first else config[CONF_WINTER_ADDITIONAL_RATE]),  # noqa: F405
+        )
+    if profile.model == "tiered_3":
+        if cycle_kwh < float(config[CONF_TIER_1_KWH]):  # noqa: F405
+            return "tier_1", float(config[CONF_TIER_1_RATE])  # noqa: F405
+        if cycle_kwh < float(config[CONF_TIER_2_KWH]):  # noqa: F405
+            return "tier_2", float(config[CONF_TIER_2_RATE])  # noqa: F405
+        return "tier_3", float(config[CONF_TIER_3_RATE])  # noqa: F405
+    if profile.model == "seasonal_tiered":
+        if 5 <= local.month <= 9:
+            return PERIOD_SUMMER, float(config[CONF_SUMMER_RATE])  # noqa: F405
+        first = cycle_kwh < float(config[CONF_TIER_KWH])  # noqa: F405
+        return (
+            PERIOD_WINTER_FIRST if first else PERIOD_WINTER_ADDITIONAL,
+            float(config[CONF_WINTER_FIRST_RATE] if first else config[CONF_WINTER_ADDITIONAL_RATE]),  # noqa: F405
+        )
+    if profile.model == "florida_tiered":
+        winter = local.month in (12, 1, 2)
+        first = cycle_kwh < float(config[CONF_TIER_KWH])  # noqa: F405
+        key = (
+            CONF_WINTER_FIRST_RATE if winter and first else  # noqa: F405
+            CONF_WINTER_ADDITIONAL_RATE if winter else  # noqa: F405
+            CONF_SUMMER_RATE if first else CONF_TIER_3_RATE  # noqa: F405
+        )
+        return ("tier_1" if first else "tier_2"), float(config[key])
+    if profile.model == "indiana_high_eff":
+        if cycle_kwh < float(config[CONF_TIER_1_KWH]):  # noqa: F405
+            return "tier_1", float(config[CONF_TIER_1_RATE])  # noqa: F405
+        if cycle_kwh < float(config[CONF_TIER_2_KWH]):  # noqa: F405
+            return "tier_2", float(config[CONF_TIER_2_RATE])  # noqa: F405
+        key = CONF_SUMMER_RATE if 7 <= local.month <= 10 else CONF_WINTER_ADDITIONAL_RATE  # noqa: F405
+        return "tier_3", float(config[key])
+    if profile.model == "oh_orh":
+        if 6 <= local.month <= 9:
+            return PERIOD_SUMMER, float(config[CONF_SUMMER_RATE])  # noqa: F405
+        first_end = float(config[CONF_TIER_KWH])  # noqa: F405
+        second_end = max(first_end, 150 * max(max_demand_kw, 10.0))
+        if cycle_kwh < first_end:
+            return "tier_1", float(config[CONF_WINTER_FIRST_RATE])  # noqa: F405
+        if cycle_kwh < second_end:
+            return "tier_2", float(config[CONF_WINTER_ADDITIONAL_RATE])  # noqa: F405
+        return "tier_3", float(config[CONF_TIER_3_RATE])  # noqa: F405
+
+    events = parse_cpp_events(str(config.get(CONF_CPP_EVENTS, "")))  # noqa: F405
+    period = tou_period(local, profile, events)
+    if profile.model == "seasonal_tou":
+        summer = 6 <= local.month <= 9
+        key = (
+            CONF_SUMMER_ON_PEAK_RATE if summer and period == PERIOD_ON_PEAK else  # noqa: F405
+            CONF_SUMMER_OFF_PEAK_RATE if summer else  # noqa: F405
+            CONF_WINTER_ON_PEAK_RATE if period == PERIOD_ON_PEAK else  # noqa: F405
+            CONF_WINTER_OFF_PEAK_RATE  # noqa: F405
+        )
+        return period, float(config[key])
+    return period, rate_for_period(profile, period, config)
+
+
 def calculate(intervals: list[UsageInterval], profile_id: str, config: dict) -> list[CostPoint]:
     """Calculate cumulative energy-only and estimated-total costs."""
     profile = PROFILES[profile_id]
